@@ -12,12 +12,15 @@ class Site extends Controller{
 
     $this->load->model('sites');    
     $data["sites"] = $this->sites->get_last_ten_entries();
-    
     $this->load->view("sites_index.php",$data);
+    
+    if(!$this->session->userdata("login")){
+      redirect("/site/show/1");
+    }
     
   }        
   
-  function show(){
+  function show(){ 
      $this->load->helper('file');
 
       $site = $this->sites->get_site($this->uri->segment(3));
@@ -93,6 +96,11 @@ class Site extends Controller{
   }  
   
   function edit(){
+    
+    if(!$this->session->userdata("login")){
+      redirect("/site/show/1");
+    }
+    
     $this->load->helper('file');
     
     $site = $this->sites->get_site($this->uri->segment(3));

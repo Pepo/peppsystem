@@ -78,7 +78,7 @@ peppsystem = {
         },
         complete : function(){           
           $("#peppsystem-overlay-content").submit(function(){
-              if(htmlsnippet == "multiple"){
+              if(htmlsnippet == "edit_multiple.html"){
                 peppsystem.writeContent($("textarea:first").val(),clickedElement);                
               }else{
                 peppsystem.writeContent($("input:first").val(),clickedElement);

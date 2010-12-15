@@ -1,4 +1,4 @@
-                                              <?
+<?
 class Images extends Model {
 
     function Images()
