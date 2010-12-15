@@ -1,0 +1,127 @@
+body{
+
+}        
+       
+#peppsystem-page h1{
+  font-size:12px;
+  line-height:18px;
+}
+#peppsystem-page form input, #peppsystem-page form textarea{
+  border:1px solid #013B6D;
+  width:500px;   
+  padding:2px;
+  font-size:12px;
+  font-family: Verdana, Arial, "MS Trebuchet", sans-serif;
+}
+
+#peppsystem-page form input[type=submit],#peppsystem-page form input[type=reset], a.peppsystem-button-blue{
+  width:auto; 
+  margin-top:12px;
+  background-color:#013B6D;
+  color:#FFF;
+  padding:3px;
+  font-size:10px;
+}
+
+#peppsystem-page form input[type=reset]{
+  background-color:#c0c0c0;
+  border-color:#c0c0c0;
+}
+
+#peppsystem-admin{
+  width:600px;
+  border:1px solid red;
+  position:fixed;
+  bottom:0;
+  left:0;       
+}      
+
+#peppsystem-overlay{
+  position : absolute;
+  background-color : #FFF;
+  width : 100%;
+  height : 100%;
+  top : 0;
+  left : 0;
+  opacity : 0.8;
+  
+}
+
+#peppsystem-overlay-content{
+  
+  position : absolute;  
+  text-align:center;
+  width : 100%;
+  height : 100%;
+  top : 0;
+  left : 0;
+  text-align : center;
+}
+        
+#peppsystem-page{
+  background-color:#FFF;
+  width:500px;
+  border:10px solid #013B6D;
+  padding:10px;
+  margin:0 auto;
+  margin-top:150px;
+  text-align:left;
+  -moz-border-radius: 10px;
+}     
+
+.iframe #peppsystem-page{
+  margin-top:0;
+}
+
+#peppsystem-single-edit-menu{
+  -moz-border-radius: 5px;  
+  border:2px solid #013B6D;
+  padding:2px;
+  background-color:#FFF;
+}
+
+.peppsystem-button-edit{
+    background:none;
+  	border:none;
+  	bottom:auto;
+  	clear:none;
+  	cursor:pointer;
+  	/* didn't really know what the default for display should be*/
+  	/*display:inline;*/
+  	float:none;
+  	font-family:Arial, Helvetica, sans-serif;
+  	font-size:medium;
+  	font-style:normal;
+  	font-weight:normal;
+  	height:auto;
+  	left:auto;
+  	letter-spacing:normal;
+  	line-height:normal;
+  	max-height:none;
+  	max-width:none;
+  	min-height:0;
+  	min-width:0;
+  	overflow:visible;
+  	position:static;
+  	right:auto;
+  	text-align:left;
+  	text-decoration:none;
+  	text-indent:0;
+  	text-transform:none;
+  	top:auto;
+  	visibility:visible;
+  	white-space:normal;
+  	width:auto;
+  	z-index:auto;
+    
+    background-image:url("button_edit.gif");
+    height:13px;
+    width:13px;
+    display:inline-block;
+    margin:3px;  
+}  
+
+#peppsystem-overlay-content iframe{
+  margin-top:150px;
+  border:0;
+}

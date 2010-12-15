@@ -59,21 +59,34 @@ class Sites extends Model {
    } 
    
    function addcontent(){
-      
-      $data = array(
-                      'site_id' => $this->input->post("site"),
-                      'text_id' => $this->input->post("id"),
-                      'content' => $this->input->post("content")
-                   );
-
-     $this->db->insert('text', $data);              
      
-     print $this->input->post("content");
+      $query = $this->db->get_where('text', array('site_id'=>'33','text_id'=> '3'), 1, 0);
+
+      $data = array('site_id' => $this->input->post("site"),'text_id' => $this->input->post("id"),'content' => $this->input->post("content"));     
+
+      if($query->num_rows() == 0){
+
+        $this->db->insert('text', $data);              
+
+        print $this->input->post("content");
+        
+      }else{
+        
+        $query = $this->db->update('text', $data, array('site_id'=>'33','text_id'=> '3'));
+        
+        print $this->input->post("content");
+        
+      }
+     
+
+
    }
 
    function get_texts(){      
-     $query = $this->db->get('text', array("site_id" => 32) );
+     
+     $query = $this->db->get('text', array("site_id" => $this->uri->segment("3")) );
      $array = array();
+
      foreach ($query->result() as $row)
      {
        $array[$row->text_id] = $row->content;
@@ -81,6 +94,15 @@ class Sites extends Model {
 
      return $array;
 
+   }   
+   
+   function replaceText($text){
+     $text = str_replace("\n\n","</p><p>",$text);
+     $text = str_replace("\n","<br />",$text);
+     $text = str_replace("</p><p>","</p>\n<p>",$text);
+     $text = str_replace("<br />","\n<br />",$text);
+
+     return "<p>".$text;
    }
 
 }

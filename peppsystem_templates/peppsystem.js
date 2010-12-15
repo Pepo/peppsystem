@@ -5,72 +5,148 @@ $(document).ready(function(){
 peppsystem = {
   init : function(){
     peppsystem.editclick();
+    peppsystem.createAdmin();   
+    peppsystem.showEditebleThings();
+    peppsystem.editimageclick();
   },
 
-  editclick : function(){
-       $("[peppsystem-edit=single]").click(function(){
-               peppsystem.showSystem("edit_single.html",this);        
-       });
+  editclick : function(element){  
+    $('.peppsystem-button-edit').remove();
+      $("[peppsystemedit=single],[peppsystemedit=multiple]").prepend($('<a class="peppsystem-button-edit"></a>'));     
+      $(".peppsystem-button-edit").click(function(){ 
+        element = $(this).parent()
+        peppsystem.showSingleEdit("edit_single.html",element);        
+      });
   },
   
-  showSystem : function(htmlsnippet,clickedElement){
+  editimageclick : function(){                
+    $("img[peppsystemedit=picture]").offset().top;
+    $("img[peppsystemedit=picture]").offset().left;
+    
+    $("img[peppsystemedit=picture]").each(function(index){
+
+      $("body").append($('<a class="peppsystem-button-edit" peppsystemid=' + $("img[peppsystemedit=picture]").eq(index).attr("peppsystemid") + '></a>').css({
+        'position' : 'absolute',
+        'left' : $("img[peppsystemedit=picture]").eq(index).offset().left + 2,
+        'top' : $("img[peppsystemedit=picture]").eq(index).offset().top + 2,
+      }).click(function(){
+        peppsystem.showImageEdit($("img[peppsystemedit=picture]").eq(index));
+        return false;
+      }));
+
+    });
+    
+    
+    
+  },
+  showImageEdit : function(clickedElement){
+    
+    width = $(clickedElement).attr("width");
+    height = $(clickedElement).attr("height");    
+
+    id = $(clickedElement).attr("peppsystemid"); 
+
+    siteId = location.href.split("/");
+    siteId = siteId.reverse();
+    siteId = siteId[0];
+    
+    block = 0;
+    
+    
     $('<div id="peppsystem-overlay"></div>').appendTo($("body"));
     $('<div id="peppsystem-overlay-content"></div>').appendTo($("body"));
-    
-    $('#peppsystem-overlay').css({
-      'position' : 'absolute',
-      'background-color' : '#000',
-      'width' : '100%',
-      'height' : '100%',
-      'top' : '0',
-      'left' : '0',
-      'opacity' : 0.4         
-    });
-
-    $('#peppsystem-overlay-content').css({
-      'position' : 'absolute',
-      'width' : '100%',
-      'height' : '100%',
-      'top' : '0',
-      'left' : '0',
-      'text-align' : 'center'
-    });
-           
-    $.ajax({
-      url: "/peppsystem_templates/"+htmlsnippet,
-      success : function(data){
-         $("#peppsystem-overlay-content").append(data);
-      },
-      complete : function(){           
-        $("#peppsystem-overlay-content").submit(function(){
-          if($("input:first").val() != ""){
-            peppsystem.writeContent($("input:first").val(),clickedElement);
-          }else{
-            alert("Feld darf nicht leer sein");               
-          }
-           return false;
-        });
         
-      }
-    });
+    $('<iframe src="/index.php/upload/index/' + width + '/' + height +'/' + siteId + '/' + id +'/' + block +'" width="600"></iframe>').appendTo($("#peppsystem-overlay-content"));
+        
   },
-  
+    
+  showSingleEdit : function(htmlsnippet, clickedElement){
+    
+    if($(clickedElement).attr("peppsystemedit") == "multiple"){
+      htmlsnippet = "edit_multiple.html";      
+    }else{
+      htmlsnippet = "edit_single.html";
+    }
+    
+    $('<div id="peppsystem-overlay"></div>').appendTo($("body"));
+    $('<div id="peppsystem-overlay-content"></div>').appendTo($("body"));
+      
+      $.ajax({
+        url: "/peppsystem_templates/"+htmlsnippet,
+        success : function(data){
+           $("#peppsystem-overlay-content").append(data);
+        },
+        complete : function(){           
+          $("#peppsystem-overlay-content").submit(function(){
+              if(htmlsnippet == "multiple"){
+                peppsystem.writeContent($("textarea:first").val(),clickedElement);                
+              }else{
+                peppsystem.writeContent($("input:first").val(),clickedElement);
+              }
+             return false;
+          });
+
+
+    $("#peppsystem-overlay-content").bind("reset", function() {
+      if(confirm("Wirklich abbrechen?")){
+        peppsystem.removeSystem();
+      }      
+    });        
+
+        }
+      });
+          
+  },   
+     
   writeContent : function(content,clickedElement){
-    id = $(clickedElement).attr("peppsystem_id");
+    id = $(clickedElement).attr("peppsystemid"); 
+    siteId = location.href.split("/");
+    siteId = siteId.reverse();
+    siteId = siteId[0]; 
+    console.log(id);
+    console.log(content);    
+    console.log(siteId);    
     $.ajax({
       url : "../addcontent",
       type: "POST",
-      data: "content="+content +"&id="+id+"&site=<?= $this->uri->segment(3); ?>",
-      success: function(msg){           
-        $(clickedElement).html(msg);
+      data: "content="+content +"&id="+id+"&site="+siteId,
+      success: function(msg){ 
+        peppsystem.editclick();
       },
       complete : function(){
         peppsystem.removeSystem();
+        window.location.reload();
       }      
     });
   },
   
   removeSystem : function(){
     $("#peppsystem-overlay, #peppsystem-overlay-content").remove();
+  },   
+  
+  addNewImage : function(path){
+    
+      $('"img[peppsystemid='+path.image_id+']"').attr("src","/uploads/"+path.path);
+    
+    peppsystem.removeSystem();
+  },
+  
+  createAdmin : function(){
+    $('<div id="peppsystem-admin"></div>').appendTo($("body"));
+    $('peppsystem-admin').css({
+      'position':'absolute',
+      'left':0
+    })         
+    
+    $.ajax({
+      url : "/peppsystem_templates/admin.html",
+      success : function(data){   
+        $("#peppsystem-admin").html(data);
+      }
+    });
+  },
+  
+  showEditebleThings : function(){
+    
   }
 }

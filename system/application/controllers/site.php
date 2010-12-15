@@ -5,6 +5,7 @@ class Site extends Controller{
     parent::Controller();
     $this->load->model('sites');                
     $this->load->model('templates');      
+    $this->load->model('images');  
   }  
   
   function index(){       
@@ -14,7 +15,68 @@ class Site extends Controller{
     
     $this->load->view("sites_index.php",$data);
     
-  }                         
+  }        
+  
+  function show(){
+     $this->load->helper('file');
+
+      $site = $this->sites->get_site($this->uri->segment(3));
+
+      $images = $this->images->get_images($this->uri->segment(3));
+
+
+      $template = $this->templates->get_template($site["template_id"]);    
+
+      $texts = $this->sites->get_texts($this->uri->segment(3));
+
+      $pfad = 'website_templates/'.$template;
+
+      $this->load->library('domparser');
+
+      $html = new simple_html_dom();
+
+      $html->load_file($pfad);
+
+      foreach( $html->find("[peppsystemedit=single]") as $key => $value){
+        if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid])){
+          $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid];
+        }
+
+        $html->find("[peppsystemedit=single]",$key)->innertext = $text;
+      }
+
+      foreach( $html->find("[peppsystemedit=multiple]") as $key => $value){
+        if(isset($texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid])){
+          $text = $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid];
+        }
+
+        $html->find("[peppsystemedit=multiple]",$key)->innertext = $this->sites->replaceText($text);
+      }
+
+
+
+      foreach($html->find("img[peppsystemedit]") as $item){      
+
+        if( isset($images[$item->peppsystemid]) ){
+
+          $item->src = "/uploads/".$images[$item->peppsystemid];
+
+        }
+
+      }
+      $anz = count($html->find("[peppsystemid]"));
+
+      for($i=0;$i <= $anz; $i++){
+
+        $html->find("[peppsystemedit]",0)->peppsystemedit = null;
+        $html->find("[peppsystemid]",0)->peppsystemid = null;
+
+      }
+
+      print $data["template"] = $html->save();
+
+  }
+                   
   
   function add(){
     $this->load->model('templates');    
@@ -34,6 +96,9 @@ class Site extends Controller{
     $this->load->helper('file');
     
     $site = $this->sites->get_site($this->uri->segment(3));
+    
+    $images = $this->images->get_images($this->uri->segment(3));
+    
 
     $template = $this->templates->get_template($site["template_id"]);    
 
@@ -47,15 +112,43 @@ class Site extends Controller{
     
     $html->load_file($pfad);
     
-    foreach( $html->find("[peppsystem-edit=single]") as $key => $value){
-      $html->find("[peppsystem-edit=single]",$key)->innertext = $texts[$html->find("[peppsystem-edit=single]",$key)->peppsystem_id];
+    foreach( $html->find("[peppsystemedit=single]") as $key => $value){
+      if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid])){
+        $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid];
+      }else{
+        $text = "Text eingeben";
+      }
+
+      $html->find("[peppsystemedit=single]",$key)->innertext = $text;
     }
-    
+
+    foreach( $html->find("[peppsystemedit=multiple]") as $key => $value){
+      if(isset($texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid])){
+        $text = $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid];
+      }else{
+        $text = "Text eingeben";
+      }
+
+      $html->find("[peppsystemedit=multiple]",$key)->innertext = $this->sites->replaceText($text);
+    }
+
+
+
+    foreach($html->find("img[peppsystemedit]") as $item){      
+      
+      if( isset($images[$item->peppsystemid]) ){
+        
+        $item->src = "/uploads/".$images[$item->peppsystemid];
+        
+      }
+      
+    }
    
     $data["template"] = $html->save();
 
     // Dirty Replacements
-    $data["template"] = str_replace("</head>",'<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><script src="/peppsystem_templates/peppsystem.js"></script></html>',$data["template"]);
+    $data["template"] = str_replace("</head>",'<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><script src="/peppsystem_templates/peppsystem.js"></script></head>',$data["template"]);
+    $data["template"] = str_replace("</head>",'<link href="/peppsystem_templates/peppsystem.css" rel="stylesheet" type="text/css" media="all" /></head>',$data["template"]);
     
     $template = $html;
     
