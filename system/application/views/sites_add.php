@@ -13,12 +13,11 @@
 <body class="iframe">
 <div id="peppsystem-page"> 
    <div id="peppsystem-page-inner">
+<h1>Seitenname</h1>
 <?= form_open('site/save');?>
-
-<?= form_label('Sitename', 'sitename'); ?>
 <?= form_input('sitename', 'johndoe'); ?>
-<?= form_dropdown('template', $templates ); ?>
-<?= form_submit(); ?>
+<p><?= form_dropdown('template', $templates ); ?></p>
+<p><?= form_submit("","Speichern"); ?></p>
 
 <?= form_close();?>                  
    </div>

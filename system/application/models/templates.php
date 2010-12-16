@@ -30,6 +30,23 @@ class Templates extends Model {
 
       return $row->filename;
 
+    }                      
+    
+    function check_new_templates(){
+      $this->load->helper('directory');
+
+      $map = directory_map('./website_templates/');
+      
+      $database = $this->get_last_ten_entries();
+      
+      foreach($map as $template){
+        if(!in_array($template,$database)){
+
+          $this->db->insert('templates', array("filename" => $template));          
+
+        }
+      }
+      
     }
 
 }

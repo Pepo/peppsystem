@@ -67,14 +67,10 @@ class Sites extends Model {
       if($query->num_rows() == 0){
 
         $this->db->insert('text', $data);              
-
-        print $this->input->post("content");
         
       }else{
         
         $query = $this->db->update('text', $data, array('site_id'=>'33','text_id'=> '3'));
-        
-        print $this->input->post("content");
         
       }
      

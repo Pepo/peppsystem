@@ -11,13 +11,15 @@ class Site extends Controller{
   
   function index(){       
 
-    $this->load->model('sites');    
+    $this->load->model('sites');        
     $data["sites"] = $this->sites->get_last_ten_entries();
+    
+    
     $this->load->view("sites_index.php",$data);
     
-    if(!$this->session->userdata("login")){
-      redirect("/site/show/1");
-    }
+      if(!$this->session->userdata("login") && count($data["sites"]) != 0){
+        redirect("/site/show/1");
+      }
     
   }        
   
@@ -43,10 +45,12 @@ class Site extends Controller{
 
       foreach( $html->find("[peppsystemedit=single]") as $key => $value){
         if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid])){
-          $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid];
+        $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]["content"];
         }
-
-        $html->find("[peppsystemedit=single]",$key)->innertext = $text;
+        
+        if(isset($text)){
+          $html->find("[peppsystemedit=single]",$key)->innertext = $text;
+        }
       }
 
       foreach( $html->find("[peppsystemedit=multiple]") as $key => $value){
@@ -54,7 +58,11 @@ class Site extends Controller{
           $text = $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid];
         }
 
-        $html->find("[peppsystemedit=multiple]",$key)->innertext = $this->sites->replaceText($text);
+        if(isset($text)){
+        $html->find("[peppsystemedit=multiple]",$key)->innertext = $this->sites->replaceText($text);          
+        }
+
+        
       }
 
 
@@ -85,6 +93,8 @@ class Site extends Controller{
   function add(){
     $this->load->model('templates');    
 
+    $this->templates->check_new_templates();
+    
     $data["templates"] = $this->templates->get_last_ten_entries();
 
     $this->load->view("sites_add.php",$data);    
@@ -127,17 +137,16 @@ class Site extends Controller{
     
     foreach( $html->find("[peppsystemedit=single]") as $key => $value){
       if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid])){
-        $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid];
+        $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]["content"];
       }else{
         $text = "Text eingeben";
       }
-
-      $html->find("[peppsystemedit=single]",$key)->innertext = $text;
+      $html->find("[peppsystemedit=single]",$key)->innertext = "$text";
     }
 
     foreach( $html->find("[peppsystemedit=multiple]") as $key => $value){
       if(isset($texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid])){
-        $text = $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid];
+        $text = $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid]["content"];
       }else{
         $text = "Text eingeben";
       }
