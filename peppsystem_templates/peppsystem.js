@@ -15,7 +15,11 @@ peppsystem = {
       $("[peppsystemedit=single],[peppsystemedit=multiple]").prepend($('<a class="peppsystem-button-edit"></a>'));     
       $(".peppsystem-button-edit").click(function(){ 
         element = $(this).parent()
-        peppsystem.showSingleEdit("edit_single.html",element);        
+        if(element.attr("peppsystemedit") == "multiple"){
+          peppsystem.showIframeContent(element,"/index.php/text/edit_multiple/");        
+        }else{
+          peppsystem.showIframeContent(element,"/index.php/text/edit_single/");                  
+        }
       });
   },
   
@@ -57,11 +61,18 @@ peppsystem = {
     
     $('<div id="peppsystem-overlay"></div>').appendTo($("body"));
     $('<div id="peppsystem-overlay-content"></div>').appendTo($("body"));
+
     $('#peppsystem-overlay').css({
       'height' : $("body").height()+200,
     });
+
+    if( $(clickedElement).is("img") ){
+      $('<iframe src="' + uri + width + '/' + height +'/' + siteId + '/' + id +'/' + block +'" width="600" height="600"></iframe>').appendTo($("#peppsystem-overlay-content"));      
+    }else{
+      $('<iframe src="' + uri + siteId + '/' + id +'/' + block +'" width="600" height="600"></iframe>').appendTo($("#peppsystem-overlay-content"));      
+    }
         
-    $('<iframe src="' + uri + width + '/' + height +'/' + siteId + '/' + id +'/' + block +'" width="600" height="600"></iframe>').appendTo($("#peppsystem-overlay-content"));
+
         
   },
     

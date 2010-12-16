@@ -6,6 +6,7 @@ class Site extends Controller{
     $this->load->model('sites');                
     $this->load->model('templates');      
     $this->load->model('images');  
+    $this->load->model('texts');  
   }  
   
   function index(){       
@@ -30,7 +31,7 @@ class Site extends Controller{
 
       $template = $this->templates->get_template($site["template_id"]);    
 
-      $texts = $this->sites->get_texts($this->uri->segment(3));
+      $texts = $this->texts->get_texts($this->uri->segment(3));
 
       $pfad = 'website_templates/'.$template;
 
@@ -113,7 +114,8 @@ class Site extends Controller{
 
     $template = $this->templates->get_template($site["template_id"]);    
 
-    $texts = $this->sites->get_texts($this->uri->segment(3));
+    $texts = $this->texts->get_texts($this->uri->segment(3));
+
 
     $pfad = 'website_templates/'.$template;
     

@@ -81,20 +81,6 @@ class Sites extends Model {
 
 
    }
-
-   function get_texts(){      
-     
-     $query = $this->db->get('text', array("site_id" => $this->uri->segment("3")) );
-     $array = array();
-
-     foreach ($query->result() as $row)
-     {
-       $array[$row->text_id] = $row->content;
-     }     
-
-     return $array;
-
-   }   
    
    function replaceText($text){
      $text = str_replace("\n\n","</p><p>",$text);
