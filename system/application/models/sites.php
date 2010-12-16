@@ -29,7 +29,7 @@ class Sites extends Model {
 
                 $this->db->insert('sites', $data);
                       
-                redirect("/site/edit/".$this->sites->get_last_id(),'refresh');
+                  return $this->sites->get_last_id();
     
     }
 

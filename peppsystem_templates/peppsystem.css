@@ -14,6 +14,9 @@ body{
   font-family: Verdana, Arial, "MS Trebuchet", sans-serif;
 }
 
+#peppsystem-page form textarea{
+  height:300px;
+}
 #peppsystem-page form input[type=submit],#peppsystem-page form input[type=reset], a.peppsystem-button-blue{
   width:auto; 
   margin-top:12px;
@@ -29,12 +32,40 @@ body{
 }
 
 #peppsystem-admin{
-  width:600px;
-  border:1px solid red;
+  background-color:#013b6D;
+  width:100%;
   position:fixed;
-  bottom:0;
-  left:0;       
-}      
+  bottom:-8px;
+/*  left:-550px;       */
+  padding:5px;
+  padding-left:40px;
+  padding-bottom:10px;
+  margin:0 auto;
+  margin-top:150px;
+  text-align:left;
+  -moz-border-radius: 10px;
+  font-size:12px;        
+  border-bottom:0;
+  border-left:0;
+  left:-10px;
+}             
+
+#peppsystem-admin ul{
+  list-style-type:none;
+  margin:0;
+  padding:0;
+}
+
+#peppsystem-admin ul li{
+  display:inline-block; 
+  border-right:1px solid #013b6d;
+  margin-right:5px;
+  padding-right:5px;
+}
+
+#peppsystem-admin ul li a{
+  color:#fff;
+}
 
 #peppsystem-overlay{
   position : absolute;
@@ -124,4 +155,18 @@ body{
 #peppsystem-overlay-content iframe{
   margin-top:150px;
   border:0;
+}
+
+#peppsystem-page-inner a{
+  color:#013B6D;  
+  text-decoration:none;  
+}
+
+#peppsystem-page-inner ul#allsites li{
+  list-style-type:none;
+  background-image:url("button_page.gif");  
+  background-repeat:no-repeat;
+  background-position:0 center;
+  padding-left:14px;
+  font-size:12px;  
 }

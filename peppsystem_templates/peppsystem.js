@@ -30,7 +30,7 @@ peppsystem = {
         'left' : $("img[peppsystemedit=picture]").eq(index).offset().left + 2,
         'top' : $("img[peppsystemedit=picture]").eq(index).offset().top + 2,
       }).click(function(){
-        peppsystem.showImageEdit($("img[peppsystemedit=picture]").eq(index));
+        peppsystem.showIframeContent($("img[peppsystemedit=picture]").eq(index),'/index.php/upload/index/');
         return false;
       }));
 
@@ -39,7 +39,9 @@ peppsystem = {
     
     
   },
-  showImageEdit : function(clickedElement){
+  showIframeContent : function(clickedElement, uri){
+    
+    peppsystem.removeSystem();
     
     width = $(clickedElement).attr("width");
     height = $(clickedElement).attr("height");    
@@ -55,8 +57,11 @@ peppsystem = {
     
     $('<div id="peppsystem-overlay"></div>').appendTo($("body"));
     $('<div id="peppsystem-overlay-content"></div>').appendTo($("body"));
+    $('#peppsystem-overlay').css({
+      'height' : $("body").height()+200,
+    });
         
-    $('<iframe src="/index.php/upload/index/' + width + '/' + height +'/' + siteId + '/' + id +'/' + block +'" width="600"></iframe>').appendTo($("#peppsystem-overlay-content"));
+    $('<iframe src="' + uri + width + '/' + height +'/' + siteId + '/' + id +'/' + block +'" width="600" height="600"></iframe>').appendTo($("#peppsystem-overlay-content"));
         
   },
     
@@ -142,6 +147,11 @@ peppsystem = {
       url : "/peppsystem_templates/admin.html",
       success : function(data){   
         $("#peppsystem-admin").html(data);
+      },complete : function(){
+        $("#peppsystem-admin a").click(function(){
+          peppsystem.showIframeContent(this,$(this).attr("href"));
+          return false;
+        });
       }
     });
   },

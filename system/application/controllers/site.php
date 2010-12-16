@@ -92,7 +92,10 @@ class Site extends Controller{
 
   function save(){
     $this->load->model('sites');
-    $this->sites->create($this->input->get_post('template'),$this->input->get_post('sitename'));
+    
+    $data["id"] = $id = $this->sites->create($this->input->get_post('template'),$this->input->get_post('sitename'));
+
+    $this->load->view("sites_save.php",$data);        
   }  
   
   function edit(){
@@ -144,10 +147,10 @@ class Site extends Controller{
 
     foreach($html->find("img[peppsystemedit]") as $item){      
       
-      if( isset($images[$item->peppsystemid]) ){
-        
-        $item->src = "/uploads/".$images[$item->peppsystemid];
-        
+      if( isset($images[$item->peppsystemid]) ){        
+        $item->src = "/uploads/".$images[$item->peppsystemid];        
+      }else{
+        $item->src = "/peppsystem_templates/temp_picture.png";
       }
       
     }
@@ -160,11 +163,8 @@ class Site extends Controller{
     
     $template = $html;
     
-    $this->load->view("header");
-    
     $this->load->view("site",$data);
     
-    $this->load->view("footer");    
 
     
   } 
