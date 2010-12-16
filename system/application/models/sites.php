@@ -11,6 +11,18 @@ class Sites extends Model {
         parent::Model();
     }
     
+    function get_all_sites(){
+      $query = $this->db->get('sites');
+
+      
+      foreach($query->result() as $item){
+        
+#        print_r($item);
+        
+      }
+      
+    }
+    
     function get_last_ten_entries()
     {
         $query = $this->db->get('sites');
@@ -19,11 +31,12 @@ class Sites extends Model {
         
     }   
     
-    function create($id,$name){
+    function create($id,$name,$parent_id = 0){
       $query = $this->db->get('sites');
       $data = array(
                      'template_id' => $id,
-                     'sitename' => $name
+                     'sitename' => $name,
+                     'parent_site_id' => $parent_id
                   );
 
 

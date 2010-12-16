@@ -16,6 +16,7 @@
 <h1>Seitenname</h1>
 <?= form_open('site/save');?>
 <?= form_input('sitename', 'johndoe'); ?>
+<?= form_hidden('parent_id', $this->uri->segment(3)); ?>   
 <p><?= form_dropdown('template', $templates ); ?></p>
 <p><?= form_submit("","Speichern"); ?></p>
 

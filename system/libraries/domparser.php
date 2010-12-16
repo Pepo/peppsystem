@@ -986,4 +986,5 @@ class domparser{
 	    $dom->load($str, $lowercase);
 	    return $dom;
 	}
+
 }

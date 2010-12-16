@@ -162,6 +162,11 @@ body{
   text-decoration:none;  
 }
 
+#peppsystem-page-inner ul{
+  margin:0;
+  padding:0;
+}
+
 #peppsystem-page-inner ul#allsites li{
   list-style-type:none;
   background-image:url("button_page.gif");  
@@ -169,4 +174,13 @@ body{
   background-position:0 center;
   padding-left:14px;
   font-size:12px;  
+  line-height:18px;
+}
+
+#peppsystem-page-inner ul#allsites li.new{
+  background-image:none;
+}       
+
+.bottom-page{
+  display:none;
 }

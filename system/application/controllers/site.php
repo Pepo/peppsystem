@@ -10,17 +10,19 @@ class Site extends Controller{
   }  
   
   function index(){       
-
     $this->load->model('sites');        
+
     $data["sites"] = $this->sites->get_last_ten_entries();
-    
-    
-    $this->load->view("sites_index.php",$data);
-    
-      if(!$this->session->userdata("login") && count($data["sites"]) != 0){
-        redirect("/site/show/1");
-      }
-    
+    $this->sites->get_all_sites();
+    if(count($data["sites"]) <= 0){
+      redirect("site/show/1");
+    }
+    else if($this->session->userdata("login")){
+      $this->load->view("sites_index.php",$data);
+    }
+    else{
+      redirect("site/show/1");
+    }
   }        
   
   function show(){ 
@@ -45,7 +47,9 @@ class Site extends Controller{
 
       foreach( $html->find("[peppsystemedit=single]") as $key => $value){
         if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid])){
-        $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]["content"];
+          $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]["content"];
+        }else{
+          $html->find("[peppsystemedit=single]",$key)->outertext = "";
         }
         
         if(isset($text)){
@@ -55,8 +59,10 @@ class Site extends Controller{
 
       foreach( $html->find("[peppsystemedit=multiple]") as $key => $value){
         if(isset($texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid])){
-          $text = $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid];
-        }
+          $text = $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid]["content"];
+        }else{
+          $html->find("[peppsystemedit=multiple]",$key)->outertext = "";
+            }
 
         if(isset($text)){
         $html->find("[peppsystemedit=multiple]",$key)->innertext = $this->sites->replaceText($text);          
@@ -70,9 +76,9 @@ class Site extends Controller{
       foreach($html->find("img[peppsystemedit]") as $item){      
 
         if( isset($images[$item->peppsystemid]) ){
-
           $item->src = "/uploads/".$images[$item->peppsystemid];
-
+        }else{
+          $item->outertext = "";
         }
 
       }
@@ -104,15 +110,15 @@ class Site extends Controller{
   function save(){
     $this->load->model('sites');
     
-    $data["id"] = $id = $this->sites->create($this->input->get_post('template'),$this->input->get_post('sitename'));
+    $data["id"] = $id = $this->sites->create($this->input->get_post('template'),$this->input->get_post('sitename'),$this->input->get_post('parent_id'));
 
-    $this->load->view("sites_save.php",$data);        
+    redirect("/site");
   }  
   
   function edit(){
     
     if(!$this->session->userdata("login")){
-      redirect("/site/show/1");
+      redirect("/login");
     }
     
     $this->load->helper('file');

@@ -8,6 +8,21 @@
 	<title>untitled</title>
 
   <link href="/peppsystem_templates/peppsystem.css" rel="stylesheet" type="text/css" media="all" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  
+  <script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    
+    $("ul#allsites li").hover(function(element){
+      $(this).find("span").show();
+    },
+    function(){
+        $(this).find("span").hide();
+    }
+    );
+    
+  });
+  </script>
 </head>
 
 <body class="iframe">
