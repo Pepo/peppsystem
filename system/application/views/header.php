@@ -20,7 +20,10 @@
         $(this).find("span").hide();
     }
     );
-    
+
+    $("input[type=reset]").click(function(){
+      window.parent.peppsystem.removeSystem();
+    });
   });
   </script>
 </head>

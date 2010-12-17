@@ -12,11 +12,19 @@ body{
   padding:2px;
   font-size:12px;
   font-family: Verdana, Arial, "MS Trebuchet", sans-serif;
+  margin-bottom:18px;
+}
+
+#peppsystem-page-inner label{
+  display:block;
+  font-size:12px;
+  line-height:18px;
 }
 
 #peppsystem-page form textarea{
   height:300px;
 }
+
 #peppsystem-page form input[type=submit],#peppsystem-page form input[type=reset], a.peppsystem-button-blue{
   width:auto; 
   margin-top:12px;
@@ -24,6 +32,7 @@ body{
   color:#FFF;
   padding:3px;
   font-size:10px;
+  margin-top:-18px;
 }
 
 #peppsystem-page form input[type=reset]{
@@ -183,4 +192,4 @@ body{
 
 .bottom-page{
   display:none;
-}
+}             

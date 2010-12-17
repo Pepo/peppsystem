@@ -15,4 +15,4 @@
   <a href="/site/add" target="parent">Seite anlegen</a>
 
 <? endif; ?>
-<?= $this->load->view("footer"); ?>
+

@@ -12,17 +12,18 @@ class Sites extends Model {
     }
     
     function get_all_sites(){
-      $query = $this->db->get('sites');
+      $array = array();
+      $query = $this->db->get_where("sites");
 
-      
-      foreach($query->result() as $item){
-        
-#        print_r($item);
-        
-      }
-      
+     foreach( $query->result() as $site){
+       $array[$site->id]["id"] = $site->id;
+       $array[$site->id]["parent_site_id"] = $site->parent_site_id;
+       $array[$site->id]["name"] = $site->sitename;
+       $array[$site->id]["children"] = array();       
+     }
+          return $array;
     }
-    
+        
     function get_last_ten_entries()
     {
         $query = $this->db->get('sites');

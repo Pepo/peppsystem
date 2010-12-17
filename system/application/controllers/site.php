@@ -13,7 +13,9 @@ class Site extends Controller{
     $this->load->model('sites');        
 
     $data["sites"] = $this->sites->get_last_ten_entries();
-    $this->sites->get_all_sites();
+    $sites = $this->sites->get_all_sites();
+ 
+    $data["baum"]  = $this->sites->get_all_sites();
     if(count($data["sites"]) <= 0){
       redirect("site/show/1");
     }
@@ -111,8 +113,9 @@ class Site extends Controller{
     $this->load->model('sites');
     
     $data["id"] = $id = $this->sites->create($this->input->get_post('template'),$this->input->get_post('sitename'),$this->input->get_post('parent_id'));
-
-    redirect("/site");
+    
+    redirect("/site/edit/".$id);
+                  
   }  
   
   function edit(){
