@@ -8,7 +8,10 @@
 	<title>untitled</title>
 
   <link href="/peppsystem_templates/peppsystem.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="/peppsystem_templates/cleditor/jquery.cleditor.css" rel="stylesheet" type="text/css" media="all" />
+
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  <script src="/peppsystem_templates/cleditor/jquery.cleditor.js"></script>
   
   <script type="text/javascript" charset="utf-8">
   $(document).ready(function(){
@@ -24,6 +27,19 @@
     $("input[type=reset]").click(function(){
       window.parent.peppsystem.removeSystem();
     });
+    
+    $("input[type=submit]").click(function(){    
+      content = $($("iframe")[0].contentWindow.document).find("body").html();
+      $("input[name=content]").val(content);     
+    });
+    
+    $("#select-template img").click(function(){        
+        
+        $("#select-template img").removeClass("active");
+        
+        $(this).addClass("active");
+      });
+
   });
   </script>
 </head>

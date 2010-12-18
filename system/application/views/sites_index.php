@@ -15,4 +15,3 @@
   <a href="/site/add" target="parent">Seite anlegen</a>
 
 <? endif; ?>
-

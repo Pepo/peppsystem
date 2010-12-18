@@ -58,7 +58,7 @@ class Sites extends Model {
       $row = $query->row();
 
          $row = $query->row();
-
+         
          return array("sitename" => $row->sitename, "template_id" => $row->template_id);
       
     }
@@ -70,9 +70,14 @@ class Sites extends Model {
      $row = $query->row();
 
      return $row->id;
-   } 
+   }  
    
-   function addcontent(){
+   function get_homepage(){
+     $query = $this->db->query('select * from config WHERE name = "homepage"');     
+     return $query->row_array();
+   }
+   
+/*   function addcontent(){
      
       $query = $this->db->get_where('text', array('site_id'=>'33','text_id'=> '3'), 1, 0);
 
@@ -83,15 +88,15 @@ class Sites extends Model {
         $this->db->insert('text', $data);              
         
       }else{
-        
-        $query = $this->db->update('text', $data, array('site_id'=>'33','text_id'=> '3'));
+        print "vorsicht irgendwas furchtbares in Zeile 91 sites Model";
+#        $query = $this->db->update('text', $data, array('site_id'=>'33','text_id'=> '3'));
         
       }
      
 
 
    }
-   
+*/   
    function replaceText($text){
      $text = str_replace("\n\n","</p><p>",$text);
      $text = str_replace("\n","<br />",$text);

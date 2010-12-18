@@ -16,14 +16,20 @@ class Site extends Controller{
     $sites = $this->sites->get_all_sites();
  
     $data["baum"]  = $this->sites->get_all_sites();
+
     if(count($data["sites"]) <= 0){
       redirect("site/show/1");
     }
     else if($this->session->userdata("login")){
+
       $this->load->view("sites_index.php",$data);
+
     }
     else{
-      redirect("site/show/1");
+      $homepage = $this->sites->get_homepage();
+
+      redirect("site/show/".$homepage["value"]);
+
     }
   }        
   
@@ -103,7 +109,7 @@ class Site extends Controller{
 
     $this->templates->check_new_templates();
     
-    $data["templates"] = $this->templates->get_last_ten_entries();
+    $data["templates"] = $this->templates->get_all_templates();
 
     $this->load->view("sites_add.php",$data);    
     

@@ -11,7 +11,7 @@ class Templates extends Model {
         parent::Model();
     }
     
-    function get_last_ten_entries()
+    function get_all_templates()
     {
           $array = "";
           $query = $this->db->get('templates');
@@ -35,12 +35,25 @@ class Templates extends Model {
     function check_new_templates(){
       $this->load->helper('directory');
 
-      $map = directory_map('./website_templates/');
+      $map = directory_map('./website_templates/',true);
 
-      $database = $this->get_last_ten_entries();
- 
+      $newmap = array();
+
+      /*
+       Schmeißt alles raus was ein Ordner ist bzw. Filenames die keinen Punkt enthalten 
+      */
+      foreach($map as $key => $item){
+        if(preg_match("/\./",$item)){                            
+          $newmap[$key] = $item;
+        }
+      }
+
+      $map = $newmap;
+      
+      $database = $this->get_all_templates();
+       
       if(!$database){
-              foreach($map as $template){
+              foreach($map as $template){                                
                 $this->db->insert('templates', array("filename" => $template));                          
               }
       }else{
@@ -50,9 +63,7 @@ class Templates extends Model {
                 }
               }
         
-        
       }
-          
       
     }
 
