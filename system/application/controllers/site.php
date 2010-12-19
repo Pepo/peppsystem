@@ -45,14 +45,14 @@ class Site extends Controller{
 
       $texts = $this->texts->get_texts($this->uri->segment(3));
 
-      $pfad = 'website_templates/'.$template;
-
       $this->load->library('domparser');
 
       $html = new simple_html_dom();
 
-      $html->load_file($pfad);
+      $template = $this->load->view('website_templates/'.$template,array(),true);
 
+      $html->load($template);
+      
       foreach( $html->find("[peppsystemedit=single]") as $key => $value){
         if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid])){
           $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]["content"];
@@ -99,8 +99,8 @@ class Site extends Controller{
 
       }
 
-      print $data["template"] = $html->save();
-
+      print $html->save();
+                
   }
                    
   
