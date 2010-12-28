@@ -2,7 +2,7 @@ body{
 
 }        
        
-#peppsystem-page h1{
+#peppsystem-page h1, #peppsystem-file-content h1{
   font-size:12px;
   line-height:18px;
 }
@@ -63,6 +63,7 @@ body{
   list-style-type:none;
   margin:0;
   padding:0;
+  font-family: Verdana, Arial, "MS Trebuchet", sans-serif;
 }
 
 #peppsystem-admin ul li{
@@ -106,6 +107,8 @@ body{
   margin:0 auto;
   margin-top:150px;
   text-align:left;
+  font-family: Verdana, Arial, "MS Trebuchet", sans-serif;
+  border-radius: 10px;
   -moz-border-radius: 10px;
 }     
 
@@ -176,7 +179,7 @@ body{
   padding:0;
 }
 
-#peppsystem-page-inner ul#allsites li{
+#peppsystem-page-inner #allsites ul li{
   list-style-type:none;
   background-image:url("button_page.gif");  
   background-repeat:no-repeat;
@@ -186,13 +189,20 @@ body{
   line-height:18px;
 }  
 
+#peppsystem-page-inner #allsites ul ul{
+  margin-left:15px;
+}
+
 #peppsystem-page-inner #select-template img{
   border:1px solid #013B6D;                
   padding:2px;
   margin:5px;
   cursor:pointer;
 }
-
+   
+#peppsystem-upload-index iframe{
+  border:0;
+}
 #peppsystem-page-inner #select-template img:first-child{
   margin-left:0;
 }
@@ -208,4 +218,45 @@ body{
 
 .bottom-page{
   display:none;
-}             
+}  
+
+#peppsystem-tab-navigation{
+  border-bottom:1px solid #013B6D;
+  margin:0;
+  padding:0;
+  padding-left:10px;
+}
+
+#peppsystem-tab-navigation li{
+  display:inline-block;      
+  background-color:#FFF;
+  color:#013B6D;
+  font-size:10px;
+  padding:3px 5px;
+  color:#fff;
+  border:1px solid #013b6d;
+  border-bottom:0px;
+}
+
+#peppsystem-tab-navigation li a{
+    color:#013B6D;
+   text-decoration:none; 
+}
+
+#peppsystem-tab-navigation li.active{
+  background-color:#013B6D;
+  color:#fff;
+}
+                                     
+#peppsystem-tab-navigation li.active a{
+  color:#FFF;
+  font-size:12px;
+}
+
+#peppsystem-file-content #linkdata{
+  display:none;
+}
+
+#peppsystem-file-content #linkextern{
+  display:none;
+}

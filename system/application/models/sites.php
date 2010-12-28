@@ -18,10 +18,18 @@ class Sites extends Model {
      foreach( $query->result() as $site){
        $array[$site->id]["id"] = $site->id;
        $array[$site->id]["parent_site_id"] = $site->parent_site_id;
-       $array[$site->id]["name"] = $site->sitename;
-       $array[$site->id]["children"] = array();       
+       $array[$site->id]["sitename"] = $site->sitename;
      }
-          return $array;
+        
+     return $array;
+
+    }
+
+
+
+    function get_homepage_id(){
+      $query = $this->db->get('config',array('name' => "homepage"));      
+      return $query->row()->value; 
     }
         
     function get_last_ten_entries()

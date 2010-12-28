@@ -16,7 +16,7 @@
   <script type="text/javascript" charset="utf-8">
   $(document).ready(function(){
     
-    $("ul#allsites li").hover(function(element){
+    $("#allsites ul li").hover(function(element){
       $(this).find("span").show();
     },
     function(){
@@ -35,15 +35,51 @@
     
     $("#select-template img").click(function(){        
         
+        $("input[name=template_id]").val($(this).attr("id"));     
+        
         $("#select-template img").removeClass("active");
         
         $(this).addClass("active");
       });
 
-  });
+     $("#peppsystem-tab-navigation a").click(function(){
+       $("#peppsystem-tab-navigation li").removeClass("active");
+       $("#linkdata, #linkextern, #linksystem").hide();
+       $(this).parent().addClass("active");
+       $("#"+$(this).attr("href")).show();
+       return false;
+     });
+
+     $("#linksystem a").click(function(){
+        
+      
+        console.log($(parent.document).find("body .cleditorPopup input[type=text]").val($(this).attr("href")));
+        removeInsertLink();
+
+        return false;
+     });
+          
+  });  
+  
+  function removeInsertLink(){
+      $(parent.document).find("#peppsystem-upload-index").remove();
+  }
+  
+  function showInsertLink(){
+    
+    $('<div id="peppsystem-upload-index"><iframe src="/upload" width="494" height="217" border="0" /></div>').css({
+      'width':'502px',
+      'height':'260px',
+      'background-color' : '#FFF',
+      'position' : 'absolute',
+      'z-index': 10001,
+      'border' : '1px solid #999999',
+      'border-top' : '0px',
+      'top' : 90,
+      'left' : $("#peppsystem-page-inner").offset().left
+    }).appendTo("#peppsystem-page-inner");
+    
+  }
+
   </script>
 </head>
-
-<body class="iframe">
-  <div id="peppsystem-page"> 
-    <div id="peppsystem-page-inner">

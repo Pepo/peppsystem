@@ -6,12 +6,49 @@ class Upload extends Controller {
 	{
 		parent::Controller();
 		$this->load->helper(array('form', 'url'));
+
+		if(!$this->session->userdata("login")){
+	    redirect("/");
+		}
+
 	}
 	
 	function index()
 	{	
-		$this->load->view('upload_form', array('error' => ' ' ));
+    $this->load->model('uploads');  
+    $this->load->model('sites');  
+    $data["sites"] =  $this->sites->get_all_sites();
+    $data["uploads"] =  $this->uploads->get_all_files();
+    $this->load->view("upload_index.php",$data);
+	}          
+	
+	function file(){
+    $this->load->view('upload_file_form', array('error' => ' ' ));
 	}
+
+  function image(){
+		$this->load->view('upload_form', array('error' => ' ' ));    
+  }
+
+  function do_file_upload(){
+
+		$config['upload_path'] = './uploads/files/';   
+		$config['allowed_types'] = 'fla|pdf|zip|exe';		
+    $this->load->library('upload', $config);		  		
+
+
+		    	
+		if ( ! $this->upload->do_upload())
+		{
+			$error = array('error' => $this->upload->display_errors());
+			
+			$this->load->view('upload_file_form', $error);
+		}else{
+			$data = array('upload_data' => $this->upload->data());		  
+		  
+		}
+    
+  }
 
 	function do_upload()
 	{

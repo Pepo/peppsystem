@@ -6,7 +6,7 @@ peppsystem = {
   init : function(){
     peppsystem.editclick();
     peppsystem.createAdmin();   
-    peppsystem.showEditebleThings();
+
     peppsystem.editimageclick();
   },
 
@@ -29,15 +29,15 @@ peppsystem = {
     
     $("img[peppsystemedit=picture]").each(function(index){
 
-      $("body").append($('<a class="peppsystem-button-edit" peppsystemid=' + $("img[peppsystemedit=picture]").eq(index).attr("peppsystemid") + '></a>').css({
+      $("body").append($('<a class="peppsystem-button-edit peppsystem-button-edit-on-fly" peppsystemid=' + $("img[peppsystemedit=picture]").eq(index).attr("peppsystemid") + '></a>').css({
         'position' : 'absolute',
         'left' : $("img[peppsystemedit=picture]").eq(index).offset().left + 2,
         'top' : $("img[peppsystemedit=picture]").eq(index).offset().top + 2,
       }).click(function(){
-        peppsystem.showIframeContent($("img[peppsystemedit=picture]").eq(index),'/index.php/upload/index/');
+        peppsystem.showIframeContent($("img[peppsystemedit=picture]").eq(index),'/index.php/upload/do_upload/');
         return false;
       }));
-
+            
     });
     
     
@@ -58,7 +58,8 @@ peppsystem = {
     
     block = 0;
     
-    
+    $('body').css({'overflow':'hidden'});
+                
     $('<div id="peppsystem-overlay"></div>').appendTo($("body"));
     $('<div id="peppsystem-overlay-content"></div>').appendTo($("body"));
 
@@ -155,19 +156,21 @@ peppsystem = {
     })         
     
     $.ajax({
-      url : "/peppsystem_templates/admin.html",
+      url : "/system/application/views/site_admin.php",
       success : function(data){   
         $("#peppsystem-admin").html(data);
       },complete : function(){
         $("#peppsystem-admin a").click(function(){
-          peppsystem.showIframeContent(this,$(this).attr("href"));
-          return false;
+          if($(this).attr("class") == "iframe"){
+            peppsystem.showIframeContent(this,$(this).attr("href"));
+            return false;
+          }
         });
       }
     });
   },
   
-  showEditebleThings : function(){
-    
+  showInsertLink : function(){
+    alert("jammas");
   }
 }

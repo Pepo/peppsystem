@@ -12,33 +12,42 @@ class Site extends Controller{
   function index(){       
     $this->load->model('sites');        
 
-    $data["sites"] = $this->sites->get_last_ten_entries();
-    $sites = $this->sites->get_all_sites();
- 
-    $data["baum"]  = $this->sites->get_all_sites();
+    $data["sites"] = $this->sites->get_all_sites();
 
-    if(count($data["sites"]) <= 0){
-      redirect("site/show/1");
+    /**
+    *  ist User nicht eingeloggt und hat auch noch keine Seite angelegt, leite um zum Login
+    */ 
+    if(count($data["sites"]) <= 0 && $this->session->userdata("login") != true){
+      redirect("/admin/");
     }
-    else if($this->session->userdata("login")){
 
-      $this->load->view("sites_index.php",$data);
+    /**
+    *  ist User nicht eingeloggt zeige Startseite
+    */ 
 
-    }
     else{
-      $homepage = $this->sites->get_homepage();
-
-      redirect("site/show/".$homepage["value"]);
-
+      $this->show();
     }
   }        
   
-  function show(){ 
-     $this->load->helper('file');
+  function show(){   
+      
+      if($this->session->userdata("login")){
+        $this->edit();
+       return false; 
+      }
+    
+      $this->load->helper('file');
 
-      $site = $this->sites->get_site($this->uri->segment(3));
+      if(!$this->uri->segment(3)){
+        $id = $this->sites->get_homepage_id();
+      }else{
+        $id = $this->uri->segment(3);
+      }
+      
+      $site = $this->sites->get_site($id);
 
-      $images = $this->images->get_images($this->uri->segment(3));
+      $images = $this->images->get_images($id);
 
 
       $template = $this->templates->get_template($site["template_id"]);    
@@ -54,7 +63,8 @@ class Site extends Controller{
       $html->load($template);
       
       foreach( $html->find("[peppsystemedit=single]") as $key => $value){
-        if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid])){
+
+        if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]) && $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]["content"] != ""){
           $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]["content"];
         }else{
           $html->find("[peppsystemedit=single]",$key)->outertext = "";
@@ -66,7 +76,7 @@ class Site extends Controller{
       }
 
       foreach( $html->find("[peppsystemedit=multiple]") as $key => $value){
-        if(isset($texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid])){
+        if(isset($texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid])  && $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid]["content"] != ""){
           $text = $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid]["content"];
         }else{
           $html->find("[peppsystemedit=multiple]",$key)->outertext = "";
@@ -118,7 +128,7 @@ class Site extends Controller{
   function save(){
     $this->load->model('sites');
     
-    $data["id"] = $id = $this->sites->create($this->input->get_post('template'),$this->input->get_post('sitename'),$this->input->get_post('parent_id'));
+    $data["id"] = $id = $this->sites->create($this->input->get_post('template_id'),$this->input->get_post('sitename'),$this->input->get_post('parent_id'));
     
     redirect("/site/edit/".$id);
                   
@@ -127,19 +137,23 @@ class Site extends Controller{
   function edit(){
     
     if(!$this->session->userdata("login")){
-      redirect("/login");
+      redirect("/admin");
     }
+
     
     $this->load->helper('file');
+
+    if(!$this->uri->segment(3)){
+      $id = $this->sites->get_homepage_id();
+    }else{
+      $id = $this->uri->segment(3);
+    }
     
-    $site = $this->sites->get_site($this->uri->segment(3));
-    
-    $images = $this->images->get_images($this->uri->segment(3));
     
 
-    $template = $this->templates->get_template($site["template_id"]);    
+    $template = $this->templates->get_template($id);    
 
-    $texts = $this->texts->get_texts($this->uri->segment(3));
+    $texts = $this->texts->get_texts($id);
 
 
     $pfad = 'website_templates/'.$template;
@@ -151,7 +165,7 @@ class Site extends Controller{
     $html->load_file($pfad);
     
     foreach( $html->find("[peppsystemedit=single]") as $key => $value){
-      if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid])){
+      if(isset($texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid])  && $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]["content"] != ""){
         $text = $texts[$html->find("[peppsystemedit=single]",$key)->peppsystemid]["content"];
       }else{
         $text = "Text eingeben";
@@ -160,7 +174,7 @@ class Site extends Controller{
     }
 
     foreach( $html->find("[peppsystemedit=multiple]") as $key => $value){
-      if(isset($texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid])){
+      if(isset($texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid])  && $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid]["content"] != ""){
         $text = $texts[$html->find("[peppsystemedit=multiple]",$key)->peppsystemid]["content"];
       }else{
         $text = "Text eingeben";
