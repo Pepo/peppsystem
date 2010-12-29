@@ -76,16 +76,12 @@
   <div id="header">
     <h1 class="irgendwas" peppsystemedit="single" peppsystemid="1">Header</h1>
   </div>
-  <h1 peppsystemid="2" peppsystemedit="single"></h1>
-  <div class="content clearfix">
-    <img src="temp_picture.png" height="300" width="400" peppsystemedit="picture" peppsystemid="2" alt="" />
-    <p class="irgendwas" peppsystemid="3" peppsystemedit="multiple"></p>
-  </div>
 
-    <img src="temp_picture.png" height="300" width="400" peppsystemedit="picture" peppsystemid="1" alt="" />
-<div class="clearfix">
-    <img src="temp_picture.png" height="80" width="120" peppsystemedit="picture" peppsystemid="3" alt="" />
-</div>    
+  <div class="content clearfix" peppsystemid="1">
+      <h1 peppsystemid="2" peppsystemedit="single"></h1>
+      <img src="temp_picture.png" height="300" width="400" peppsystemedit="picture" peppsystemid="2" alt="" />
+      <p class="irgendwas" peppsystemid="3" peppsystemedit="multiple"></p>
+  </div>
 </div>  
 
 </body>

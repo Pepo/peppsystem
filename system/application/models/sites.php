@@ -84,27 +84,8 @@ class Sites extends Model {
      $query = $this->db->query('select * from config WHERE name = "homepage"');     
      return $query->row_array();
    }
-   
-/*   function addcontent(){
-     
-      $query = $this->db->get_where('text', array('site_id'=>'33','text_id'=> '3'), 1, 0);
 
-      $data = array('site_id' => $this->input->post("site"),'text_id' => $this->input->post("id"),'content' => $this->input->post("content"));     
-
-      if($query->num_rows() == 0){
-
-        $this->db->insert('text', $data);              
-        
-      }else{
-        print "vorsicht irgendwas furchtbares in Zeile 91 sites Model";
-#        $query = $this->db->update('text', $data, array('site_id'=>'33','text_id'=> '3'));
-        
-      }
-     
-
-
-   }
-*/   
+  
    function replaceText($text){
      $text = str_replace("\n\n","</p><p>",$text);
      $text = str_replace("\n","<br />",$text);

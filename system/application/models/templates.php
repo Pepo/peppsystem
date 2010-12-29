@@ -28,7 +28,9 @@ class Templates extends Model {
       
       $query = $this->db->query("select filename from templates WHERE id = '$template_id'"); 
       $row = $query->row();
-
+      
+      
+      
       return $row->filename;
 
     }                      

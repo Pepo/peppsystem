@@ -6,10 +6,42 @@ peppsystem = {
   init : function(){
     peppsystem.editclick();
     peppsystem.createAdmin();   
-
     peppsystem.editimageclick();
+    peppsystem.editblockclick();
+    alert("block branch");
   },
 
+  editblockclick : function(){
+    var top = $("[peppsystemedit=block]").offset().top;
+    var left = $("[peppsystemedit=block]").offset().left -20;   
+
+    $("[peppsystemedit=block]").each(function(index){
+      $("body").append($('<a class="peppsystem-button-edit peppsystem-block-clone peppsystem-button-edit-on-fly" peppsystemid="'+$("[peppsystemedit=block]").eq(index).attr("peppsystemid")+'"></a>').css({'left':left,'top':top,'position':'absolute'}));
+    });
+    
+    
+    $('.peppsystem-block-clone').hover(function(){
+      var block_id = $(this).attr("peppsystemid");
+      var clone;   
+      var base_element;
+    });
+    
+    $('.peppsystem-block-clone').click(function(){
+      var block_id = $(this).attr("peppsystemid");
+      var clone;   
+      var base_element;
+      $("[peppsystemedit=block]").each(function(index){
+        if($(this).attr("peppsystemid") == block_id){
+          base_element = $(this);
+          clone = $(this).clone();
+        };
+      });
+
+      clone.insertAfter(base_element);
+
+    });
+
+  },
   editclick : function(element){  
     $('.peppsystem-button-edit').remove();
       $("[peppsystemedit=single],[peppsystemedit=multiple]").prepend($('<a class="peppsystem-button-edit"></a>'));     
@@ -122,7 +154,8 @@ peppsystem = {
     siteId = siteId[0]; 
     console.log(id);
     console.log(content);    
-    console.log(siteId);    
+    console.log(siteId);                                  
+
     $.ajax({
       url : "../addcontent",
       type: "POST",

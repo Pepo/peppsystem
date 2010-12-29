@@ -26,9 +26,15 @@ class Site extends Controller{
     */ 
 
     else{
-      $this->show();
+      $id = $this->sites->get_homepage_id(); 
+      redirect("/site/show/".$id);
     }
   }        
+
+  function show_all_pages(){
+    $data["sites"] = $this->sites->get_all_sites();
+    $this->load->view("sites_all_pages",$data);
+  }
   
   function show(){   
       
@@ -39,20 +45,16 @@ class Site extends Controller{
     
       $this->load->helper('file');
 
-      if(!$this->uri->segment(3)){
-        $id = $this->sites->get_homepage_id();
-      }else{
-        $id = $this->uri->segment(3);
-      }
+      $id = $this->uri->segment(3);
       
       $site = $this->sites->get_site($id);
-
+      
       $images = $this->images->get_images($id);
 
 
       $template = $this->templates->get_template($site["template_id"]);    
 
-      $texts = $this->texts->get_texts($this->uri->segment(3));
+      $texts = $this->texts->get_texts($id);
 
       $this->load->library('domparser');
 
@@ -130,7 +132,7 @@ class Site extends Controller{
     
     $data["id"] = $id = $this->sites->create($this->input->get_post('template_id'),$this->input->get_post('sitename'),$this->input->get_post('parent_id'));
     
-    redirect("/site/edit/".$id);
+    redirect("/site/show_all_pages/");
                   
   }  
   
@@ -139,22 +141,18 @@ class Site extends Controller{
     if(!$this->session->userdata("login")){
       redirect("/admin");
     }
-
-    
+            
     $this->load->helper('file');
 
-    if(!$this->uri->segment(3)){
-      $id = $this->sites->get_homepage_id();
-    }else{
-      $id = $this->uri->segment(3);
-    }
-    
-    
+    $id = $this->uri->segment(3);    
 
-    $template = $this->templates->get_template($id);    
+    $site = $this->sites->get_site($id);    
 
     $texts = $this->texts->get_texts($id);
 
+    $images = $this->images->get_images($id);
+
+    $template = $this->templates->get_template($site["template_id"]);
 
     $pfad = 'website_templates/'.$template;
     
@@ -198,7 +196,7 @@ class Site extends Controller{
     $data["template"] = $html->save();
 
     // Dirty Replacements
-    $data["template"] = str_replace("</head>",'<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><script src="/peppsystem_templates/peppsystem.js"></script></head>',$data["template"]);
+    $data["template"] = str_replace("</head>",'<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script><script src="/peppsystem_templates/peppsystem.js"></script></head>',$data["template"]);
     $data["template"] = str_replace("</head>",'<link href="/peppsystem_templates/peppsystem.css" rel="stylesheet" type="text/css" media="all" /></head>',$data["template"]);
     
     $template = $html;

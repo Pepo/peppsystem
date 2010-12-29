@@ -10,16 +10,28 @@ class Texts extends Model {
     /**
     * cleEdit übergibt Leere Textfelder mit <br>. Dies schmeißt das raus.
     */
-    if($content == "<br>"){
-      $content = "";
-    }
-        
+    
+    $content = $this->clean_text($content);
+
     $data = array('site_id' => $site_id, 'text_id' => $text_id, 'content' => $content, 'created_on' => date("Y-m-d H:i:s"));
 
     $this->db->insert('text', $data);              
 
     return true;
   }             
+
+  function clean_text($content){
+    if($content == "<br>"){
+      return $content = "";      
+    }
+    $content = str_replace("<div>","\n<div>",$content);
+    $content = str_replace("</ul>","</ul>\n",$content);        
+    $content = str_replace("<div><br></div>","\n<p>",$content);
+    $content = str_replace("</div><div>","<br />\n",$content);        
+
+    return $content;
+  }
+  
   
   function get_last_entry(){          
 
@@ -34,7 +46,6 @@ class Texts extends Model {
     $query = $this->db->get('text',array("site_id" => $site_id, "text_id" => $text_id, "block_id" => $block_id));
     
     if($query->num_rows > 0){
-      print $query->row()->content;       
       return $query->row()->content;      
     }else{
       return false;
