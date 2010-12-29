@@ -1,14 +1,14 @@
 $(document).ready(function(){
   peppsystem.init();
 });                 
-
+    alert("block branch");
 peppsystem = {
   init : function(){
     peppsystem.editclick();
     peppsystem.createAdmin();   
     peppsystem.editimageclick();
     peppsystem.editblockclick();
-    alert("block branch");
+
   },
 
   editblockclick : function(){
